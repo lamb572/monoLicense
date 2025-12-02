@@ -1,0 +1,175 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://monolicense.dev/schemas/scan-output.json",
+  "title": "MonoLicense Scan Output",
+  "description": "JSON schema for the monolicense scan command output",
+  "type": "object",
+  "required": ["projects", "metadata", "summary"],
+  "additionalProperties": false,
+  "properties": {
+    "projects": {
+      "type": "array",
+      "description": "List of workspace projects with their dependencies",
+      "items": {
+        "$ref": "#/definitions/Project"
+      }
+    },
+    "metadata": {
+      "$ref": "#/definitions/ScanMetadata"
+    },
+    "summary": {
+      "$ref": "#/definitions/ScanSummary"
+    }
+  },
+  "definitions": {
+    "Project": {
+      "type": "object",
+      "required": ["name", "path", "version", "dependencies", "devDependencies", "isWorkspaceRoot"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Package name from package.json",
+          "minLength": 1
+        },
+        "path": {
+          "type": "string",
+          "description": "Relative path from monorepo root",
+          "pattern": "^[^/].*|\\.$"
+        },
+        "version": {
+          "type": "string",
+          "description": "Version from package.json"
+        },
+        "dependencies": {
+          "type": "array",
+          "description": "Production dependencies",
+          "items": {
+            "$ref": "#/definitions/Dependency"
+          }
+        },
+        "devDependencies": {
+          "type": "array",
+          "description": "Development dependencies",
+          "items": {
+            "$ref": "#/definitions/Dependency"
+          }
+        },
+        "isWorkspaceRoot": {
+          "type": "boolean",
+          "description": "True if this is the root package.json"
+        }
+      }
+    },
+    "Dependency": {
+      "type": "object",
+      "required": ["name", "version", "license", "isWorkspaceDependency", "isDev", "specifier"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "npm package name",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "description": "Resolved exact version"
+        },
+        "license": {
+          "$ref": "#/definitions/LicenseInfo"
+        },
+        "isWorkspaceDependency": {
+          "type": "boolean",
+          "description": "True if uses workspace: protocol"
+        },
+        "isDev": {
+          "type": "boolean",
+          "description": "True if devDependency"
+        },
+        "specifier": {
+          "type": "string",
+          "description": "Original version specifier from package.json"
+        }
+      }
+    },
+    "LicenseInfo": {
+      "type": "object",
+      "required": ["spdxId", "source"],
+      "additionalProperties": false,
+      "properties": {
+        "spdxId": {
+          "type": "string",
+          "description": "Normalized SPDX license identifier or UNKNOWN"
+        },
+        "source": {
+          "type": "string",
+          "enum": ["package.json", "package.json-array", "license-file", "unknown"],
+          "description": "Source of license detection"
+        },
+        "rawValue": {
+          "type": ["string", "null"],
+          "description": "Original value if different from spdxId"
+        }
+      }
+    },
+    "ScanMetadata": {
+      "type": "object",
+      "required": ["monorepoRoot", "lockfileVersion", "scanTimestamp"],
+      "additionalProperties": false,
+      "properties": {
+        "monorepoRoot": {
+          "type": "string",
+          "description": "Absolute path to monorepo root"
+        },
+        "lockfileVersion": {
+          "type": "string",
+          "description": "pnpm lockfile version"
+        },
+        "scanTimestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp of scan"
+        },
+        "pnpmVersion": {
+          "type": ["string", "null"],
+          "description": "pnpm version if detectable"
+        }
+      }
+    },
+    "ScanSummary": {
+      "type": "object",
+      "required": ["totalProjects", "totalDependencies", "uniqueDependencies", "licenseCounts", "unknownLicenseCount"],
+      "additionalProperties": false,
+      "properties": {
+        "totalProjects": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of workspace projects"
+        },
+        "totalDependencies": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total dependency count across all projects"
+        },
+        "uniqueDependencies": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Unique package@version combinations"
+        },
+        "licenseCounts": {
+          "type": "object",
+          "description": "Count of each license type",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "unknownLicenseCount": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of dependencies with unknown license"
+        }
+      }
+    }
+  }
+}
