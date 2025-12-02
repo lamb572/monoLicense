@@ -191,5 +191,53 @@ Feature specs live in `specs/NNN-feature-name/`.
 - **001-pnpm-scanner** (In Progress): pnpm monorepo scanning with per-project dependency extraction and license detection
 
 <!-- MANUAL ADDITIONS START -->
-<!-- Add project-specific notes here that should persist across updates -->
+## Implementation Commit Workflow
+
+**CRITICAL**: Commits must be made incrementally during implementation, not batched at the end.
+
+### When to Commit
+
+Commit after completing each logical unit of work:
+- After creating a new package (package.json, tsconfig.json)
+- After implementing a function and its tests passing
+- After completing a task from tasks.md
+- After fixing a bug or test failure
+- After adding/updating types
+
+### Commit Frequency Guidelines
+
+- **Small commits**: 1-3 files changed, single logical change
+- **Commit early, commit often**: Every 15-30 minutes of work should produce a commit
+- **Never batch**: Don't accumulate hours of work before committing
+
+### Example Commit Sequence for a Feature
+
+```bash
+# 1. Package setup
+git add libs/license/package.json libs/license/tsconfig.json
+git commit -m "chore(license): initialize package structure"
+
+# 2. Types
+git add libs/license/src/types.ts
+git commit -m "feat(license): add LicenseInfo and LicenseSource types"
+
+# 3. Tests first (TDD)
+git add libs/license/tests/normalize-license.test.ts
+git commit -m "test(license): add normalize-license tests"
+
+# 4. Implementation
+git add libs/license/src/normalize-license.ts
+git commit -m "feat(license): implement SPDX license normalization"
+
+# 5. Integration
+git add libs/license/src/index.ts
+git commit -m "feat(license): export license functions from index"
+```
+
+### Why This Matters
+
+- Enables easy rollback if something breaks
+- Creates clear history for code review
+- Makes rebasing and conflict resolution easier
+- Documents the implementation journey
 <!-- MANUAL ADDITIONS END -->
