@@ -122,6 +122,24 @@
 
 ---
 
+## Follow-up: Fix Lint Warnings (Future Task)
+
+**Purpose**: Address functional programming violations in existing code
+
+**Note**: These are warnings, not errors. The codebase currently has mutation patterns that should be refactored to pure functional style.
+
+- [ ] F001 Refactor `libs/dependency/src/build-scan-result.ts` to use immutable patterns (avoid `.push()`)
+- [ ] F002 Refactor `libs/dependency/src/detect-monorepo.ts` to use immutable patterns
+- [ ] F003 Refactor `libs/parsers/src/pnpm-lockfile.ts` to use immutable patterns
+- [ ] F004 Refactor `libs/license/src/extract-license.ts` to remove `let` usage
+- [ ] F005 Refactor `libs/utils/src/result.ts` to use immutable patterns
+- [ ] F006 Refactor `apps/cli/src/commands/scan.ts` to reduce mutation (use `reduce` instead of `for` + `push`)
+- [ ] F007 Add `readonly` modifiers to all type definitions per `prefer-readonly-type` warnings
+
+**Approach**: Use `reduce`, spread operators, and `concat` instead of `push`. Replace `let` with `const` and restructure logic.
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
