@@ -1,0 +1,26 @@
+lockfileVersion: '6.0'
+settings:
+  autoInstallPeers: true
+importers:
+  .:
+    dependencies: {}
+  apps/cli:
+    dependencies:
+      '@myorg/utils':
+        specifier: workspace:*
+        version: link:../../libs/utils
+      commander:
+        specifier: ^11.0.0
+        version: 11.1.0
+  libs/utils:
+    dependencies:
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+packages:
+  /commander@11.1.0:
+    resolution: {integrity: sha512-test-commander}
+    dev: false
+  /lodash@4.17.21:
+    resolution: {integrity: sha512-test-lodash}
+    dev: false

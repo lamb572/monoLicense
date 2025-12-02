@@ -1,0 +1,7 @@
+{
+  "name": "test-package-legacy",
+  "version": "1.0.0",
+  "licenses": [
+    { "type": "MIT", "url": "https://opensource.org/licenses/MIT" }
+  ]
+}

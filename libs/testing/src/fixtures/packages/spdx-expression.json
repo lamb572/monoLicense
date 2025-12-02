@@ -1,0 +1,5 @@
+{
+  "name": "test-package-spdx",
+  "version": "1.0.0",
+  "license": "MIT OR Apache-2.0"
+}
