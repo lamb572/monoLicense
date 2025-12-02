@@ -64,8 +64,8 @@
 - [x] T008 [P] [US2] Create CI workflow for push events in `.github/workflows/ci.yml` (removed - PR workflow only)
 - [x] T009 [P] [US2] Create PR workflow with Node.js matrix (20, 22, 24) in `.github/workflows/pr.yml`
 - [x] T010 [US2] Push workflow files to GitHub and verify CI runs
-- [ ] T011 [US2] Configure branch protection on `main` requiring CI checks to pass
-- [ ] T012 [US2] Configure branch protection to require PR before merging
+- [ ] T011 [US2] Configure branch protection on `main` requiring CI checks to pass (via GitHub UI after merge)
+- [ ] T012 [US2] Configure branch protection to require PR before merging (via GitHub UI after merge)
 - [ ] T013 [US2] Verify branch protection by attempting direct push to main (should fail)
 
 **Checkpoint**: All CI checks pass on main branch, PRs cannot merge without passing CI
@@ -81,9 +81,9 @@
 ### Implementation for User Story 3
 
 - [x] T014 [US3] Create CodeRabbit configuration in `.coderabbit.yaml` with constitution rules
-- [ ] T015 [US3] Verify CodeRabbit app is installed on repository (Settings → Integrations)
-- [ ] T016 [US3] Push config and open test PR to verify CodeRabbit responds
-- [ ] T017 [US3] Verify CodeRabbit checks for functional programming patterns (no classes, no this)
+- [ ] T015 [US3] Verify CodeRabbit app is installed on repository (Settings → Integrations) - requires user action
+- [ ] T016 [US3] Push config and open test PR to verify CodeRabbit responds - after CodeRabbit installed
+- [ ] T017 [US3] Verify CodeRabbit checks for functional programming patterns (no classes, no this) - after CodeRabbit installed
 
 **Checkpoint**: CodeRabbit posts review comments on 100% of new pull requests
 
@@ -116,9 +116,9 @@
 
 **Purpose**: Final validation and documentation
 
-- [ ] T028 Update agent context with feature completion (`.specify/scripts/bash/update-agent-context.sh`)
-- [ ] T029 Run quickstart.md validation - verify all setup instructions work
-- [ ] T030 Verify SC-008: CI runs complete in under 5 minutes
+- [x] T028 Update agent context with feature completion (`.specify/scripts/bash/update-agent-context.sh`)
+- [x] T029 Run quickstart.md validation - verify all setup instructions work
+- [x] T030 Verify SC-008: CI runs complete in under 5 minutes (latest: 45s)
 
 ---
 
