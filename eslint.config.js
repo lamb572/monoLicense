@@ -2,6 +2,7 @@ import eslint from '@eslint/js';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
 import functional from 'eslint-plugin-functional';
+import importPlugin from 'eslint-plugin-import';
 import globals from 'globals';
 
 export default [
@@ -25,6 +26,13 @@ export default [
     plugins: {
       '@typescript-eslint': tseslint,
       functional,
+      import: importPlugin,
+    },
+    settings: {
+      'import/resolver': {
+        typescript: true,
+        node: true,
+      },
     },
     rules: {
       // TypeScript strict rules
@@ -39,6 +47,9 @@ export default [
       'functional/immutable-data': 'warn',
       'functional/no-let': 'warn',
       'functional/prefer-readonly-type': 'warn',
+
+      // Import rules (circular dependency detection)
+      'import/no-cycle': 'error',
 
       // General rules
       'no-console': 'warn',
