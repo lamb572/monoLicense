@@ -25,6 +25,7 @@
 15. [UI Component Development (Atomic Design)](#ui-component-development-atomic-design)
 16. [Shared Configuration](#shared-configuration)
 17. [Anti-Patterns and No-Nos](#anti-patterns-and-no-nos)
+18. [Git Conventions](#git-conventions)
 
 ---
 
@@ -1999,6 +2000,108 @@ if (dependencies.length > MAX_DEPENDENCY_WARNING_THRESHOLD) {
   console.warn('Large dependency count');
 }
 ```
+
+---
+
+## Git Conventions
+
+### Commit Message Format
+
+MonoLicense uses [Conventional Commits](https://www.conventionalcommits.org/) for clear, consistent commit history.
+
+**Format**:
+
+```
+<type>(<scope>): <subject>
+
+[optional body]
+
+[optional footer]
+```
+
+### Commit Types
+
+| Type | Description | Example |
+|------|-------------|---------|
+| `feat` | New feature | `feat(parsers): add pnpm lockfile v9 support` |
+| `fix` | Bug fix | `fix(license): handle dual-license SPDX expressions` |
+| `docs` | Documentation only | `docs: update README with quick start guide` |
+| `style` | Formatting, no code change | `style(cli): fix indentation in scan command` |
+| `refactor` | Code restructuring | `refactor(cli): extract scan command to separate file` |
+| `test` | Adding/updating tests | `test(dependency): add workspace detection tests` |
+| `chore` | Build, tooling, deps | `chore: upgrade TypeScript to 5.4` |
+
+### Scope
+
+Scope should match the package name from `apps/` or `libs/`:
+
+- **Apps**: `cli`, `web-dashboard`, `api`, `bot`
+- **Libs**: `parsers`, `license`, `dependency`, `policy`, `approval`, `reporter`, `utils`, `testing`, `config`
+
+Scope is optional for changes affecting multiple packages or root-level config.
+
+### Subject Line Rules
+
+1. **Max 72 characters** - Keep subject concise
+2. **Imperative mood** - "add feature" not "added feature" or "adds feature"
+3. **No period** - Don't end with punctuation
+4. **Lowercase** - Start with lowercase letter
+5. **Present tense** - "change" not "changed"
+
+### Breaking Changes
+
+Add `!` after type/scope for breaking changes:
+
+```
+feat(cli)!: change default output format to JSON
+
+BREAKING CHANGE: The default output format has changed from text to JSON.
+Users who depend on text output should use --format text explicitly.
+```
+
+### Body Guidelines
+
+Use body for:
+- Explaining **why** the change was made (not what)
+- Providing context that isn't obvious from the diff
+- Referencing related issues or discussions
+
+```
+fix(license): handle packages with multiple license fields
+
+Some packages declare licenses in both "license" and "licenses" fields.
+Previously we only checked "license", missing valid license data.
+
+Fixes #42
+```
+
+### Examples
+
+**Good**:
+```
+feat(parsers): add pnpm lockfile v9 support
+fix(license): handle dual-license SPDX expressions
+docs: update README with quick start guide
+test(dependency): add workspace detection tests
+chore: upgrade TypeScript to 5.4
+refactor(cli): extract scan command to separate file
+feat(cli)!: require Node.js 20+
+```
+
+**Bad**:
+```
+Updated parser                    # No type, vague subject
+feat: stuff                       # Non-descriptive subject
+FEAT(CLI): Add new feature.       # Wrong case, period at end
+feat(parsers): added support      # Past tense instead of imperative
+fix: various bug fixes            # Too vague, multiple changes
+```
+
+### Enforcement
+
+- **Pre-commit hook**: Validates commit message format (Husky + commitlint)
+- **CI check**: Rejects PRs with invalid commit messages
+- **Squash merging**: PR title becomes commit message, must follow format
 
 ---
 
