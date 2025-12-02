@@ -1,50 +1,58 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# MonoLicense Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Functional Programming First
+Pure functions, no classes, no `this` keyword. All state is explicit via parameters.
+Enforced via ESLint with `eslint-plugin-functional` rules (no-class, no-this-expression,
+immutable-data, no-let, prefer-readonly-type). Classes allowed ONLY when required by
+third-party libraries with explicit code review justification.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Apps/Libs Architecture
+Strict separation: `apps/` contains deployable applications, `libs/` contains reusable
+feature libraries. Each library is self-contained with its own types and functions.
+No shared "kitchen sink" packages. Zero circular dependencies enforced via ESLint
+import rules.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Result Type Pattern
+Explicit error handling using `Result<T, E>` discriminated unions. No thrown exceptions
+for expected errors. Functions return `{ success: true, data: T }` or
+`{ success: false, error: E }`. Railway-oriented programming for composing operations.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Type Safety & Immutability
+Strict TypeScript (`tsc --strict`) with comprehensive type coverage. All data structures
+use `readonly` modifiers. Discriminated unions for state modeling. No `any` type without
+explicit justification.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Test-Driven Development
+TDD mandatory: Tests written → Tests fail → Implement → Tests pass → Refactor.
+Target 80% coverage (quality over quantity). Testing pyramid: 70% unit, 25% integration,
+5% E2E. Shared testing utilities in `libs/testing`. Every function independently testable.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Technology Stack
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- **Package Manager**: pnpm 8.x with workspaces
+- **Language**: TypeScript 5.3+ (strict mode, composite projects)
+- **Testing**: Vitest (unit/integration), Playwright (E2E)
+- **Linting**: ESLint 9.x with functional plugin
+- **Formatting**: Prettier 3.x
+- **CI**: GitHub Actions with all checks required
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Development Workflow
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+1. **Feature branches**: Named `NNN-feature-name` (e.g., `001-pnpm-parser`)
+2. **Spec-first**: Features start with `/speckit.specify` before code
+3. **TDD cycle**: Red → Green → Refactor strictly enforced
+4. **PR review**: All changes require review, CI must pass
+5. **No direct commits**: All changes via PR to main branch
+6. **Commit messages**: Follow Conventional Commits format (`type(scope): subject`)
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all other practices. Violations require explicit
+justification documented in PR description. Amendments require:
+1. Documentation of rationale
+2. Review and approval
+3. Migration plan for existing code
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2025-12-02 | **Last Amended**: 2025-12-02
