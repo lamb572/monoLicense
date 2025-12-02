@@ -143,7 +143,7 @@ type Config = {
 ### 5. Latest LTS Versions
 
 All packages must use the most recent LTS (Long Term Support) versions:
-- Node.js: 20.x LTS
+- Node.js: 22.x LTS (development), with CI testing on 20.x, 22.x, and 24.x
 - TypeScript: 5.3+
 - All dependencies: Latest stable/LTS
 

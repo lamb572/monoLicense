@@ -962,7 +962,7 @@ POST /api/scan
 
 | App           | Primary Tech                  | Additional                                 |
 | ------------- | ----------------------------- | ------------------------------------------ |
-| CLI           | Node.js 20.x, TypeScript 5.3+ | Commander, @clack/prompts, Chalk           |
+| CLI           | Node.js 22.x, TypeScript 5.3+ | Commander, @clack/prompts, Chalk           |
 | Web Dashboard | React 18, Vite                | TanStack Query, React Router, Tailwind CSS |
 | API           | Fastify 4.x, MongoDB 6.x      | @fastify/jwt, Pino logger                  |
 | Bot           | Probot 13.x                   | Octokit                                    |
