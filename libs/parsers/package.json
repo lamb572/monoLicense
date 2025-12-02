@@ -1,5 +1,5 @@
 {
-  "name": "@monolicense/testing",
+  "name": "@monolicense/parsers",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -12,10 +12,18 @@
     }
   },
   "scripts": {
-    "build": "tsc && cp -r src/fixtures dist/",
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "clean": "rm -rf dist *.tsbuildinfo"
   },
+  "dependencies": {
+    "@monolicense/utils": "workspace:*",
+    "yaml": "^2.3.4"
+  },
   "devDependencies": {
-    "typescript": "^5.3.0"
+    "@monolicense/testing": "workspace:*",
+    "typescript": "^5.3.0",
+    "vitest": "^2.0.0"
   }
 }

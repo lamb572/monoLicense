@@ -70,12 +70,14 @@ export const lockfileParseError = (
   path: string,
   message: string,
   line?: number
-): LockfileParseError => ({
-  type: 'LOCKFILE_PARSE_ERROR',
-  path,
-  message,
-  line,
-});
+): LockfileParseError => {
+  const base = {
+    type: 'LOCKFILE_PARSE_ERROR' as const,
+    path,
+    message,
+  };
+  return line !== undefined ? { ...base, line } : base;
+};
 
 /**
  * Creates a WORKSPACE_CONFIG_NOT_FOUND error.
