@@ -31,12 +31,13 @@ Target 80% coverage (quality over quantity). Testing pyramid: 70% unit, 25% inte
 
 ## Technology Stack
 
+- **Runtime**: Node.js 20, 22, or 24 (LTS versions)
 - **Package Manager**: pnpm 8.x with workspaces
 - **Language**: TypeScript 5.3+ (strict mode, composite projects)
 - **Testing**: Vitest (unit/integration), Playwright (E2E)
 - **Linting**: ESLint 9.x with functional plugin
 - **Formatting**: Prettier 3.x
-- **CI**: GitHub Actions with all checks required
+- **CI**: GitHub Actions with all checks required (test matrix: Node 20, 22, 24)
 
 ## Development Workflow
 
