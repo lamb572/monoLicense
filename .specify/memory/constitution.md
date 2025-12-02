@@ -48,6 +48,7 @@ Target 80% coverage (quality over quantity). Testing pyramid: 70% unit, 25% inte
 5. **No direct commits**: All changes via PR to main branch
 6. **Commit messages**: Follow Conventional Commits format (`type(scope): subject`)
 7. **Rebase workflow**: Feature branches rebase onto main (no merge commits)
+8. **Incremental commits**: Commit after each logical unit (package setup, types, tests, implementation). Never batch hours of work into single commits.
 
 ## Governance
 
