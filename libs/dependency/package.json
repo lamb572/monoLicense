@@ -1,0 +1,30 @@
+{
+  "name": "@monolicense/dependency",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@monolicense/license": "workspace:*",
+    "@monolicense/parsers": "workspace:*",
+    "@monolicense/utils": "workspace:*",
+    "fast-glob": "^3.3.0"
+  },
+  "devDependencies": {
+    "@monolicense/testing": "workspace:*",
+    "typescript": "^5.3.0",
+    "vitest": "^2.0.0"
+  }
+}
