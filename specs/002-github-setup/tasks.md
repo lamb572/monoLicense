@@ -61,9 +61,9 @@
 
 ### Implementation for User Story 2
 
-- [ ] T008 [P] [US2] Create CI workflow for push events in `.github/workflows/ci.yml`
-- [ ] T009 [P] [US2] Create PR workflow with Node.js matrix (20, 22, 24) in `.github/workflows/pr.yml`
-- [ ] T010 [US2] Push workflow files to GitHub and verify CI runs
+- [x] T008 [P] [US2] Create CI workflow for push events in `.github/workflows/ci.yml` (removed - PR workflow only)
+- [x] T009 [P] [US2] Create PR workflow with Node.js matrix (20, 22, 24) in `.github/workflows/pr.yml`
+- [x] T010 [US2] Push workflow files to GitHub and verify CI runs
 - [ ] T011 [US2] Configure branch protection on `main` requiring CI checks to pass
 - [ ] T012 [US2] Configure branch protection to require PR before merging
 - [ ] T013 [US2] Verify branch protection by attempting direct push to main (should fail)
@@ -80,7 +80,7 @@
 
 ### Implementation for User Story 3
 
-- [ ] T014 [US3] Create CodeRabbit configuration in `.coderabbit.yaml` with constitution rules
+- [x] T014 [US3] Create CodeRabbit configuration in `.coderabbit.yaml` with constitution rules
 - [ ] T015 [US3] Verify CodeRabbit app is installed on repository (Settings → Integrations)
 - [ ] T016 [US3] Push config and open test PR to verify CodeRabbit responds
 - [ ] T017 [US3] Verify CodeRabbit checks for functional programming patterns (no classes, no this)
