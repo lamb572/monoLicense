@@ -46,6 +46,7 @@ Target 80% coverage (quality over quantity). Testing pyramid: 70% unit, 25% inte
 4. **PR review**: All changes require review, CI must pass
 5. **No direct commits**: All changes via PR to main branch
 6. **Commit messages**: Follow Conventional Commits format (`type(scope): subject`)
+7. **Rebase workflow**: Feature branches rebase onto main (no merge commits)
 
 ## Governance
 

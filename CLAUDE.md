@@ -114,6 +114,25 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/):
 - No period at end of subject
 - Breaking changes: add `!` after type (e.g., `feat(cli)!: change output format`)
 
+## Git Workflow
+
+**Rebase-based workflow** - keep linear history, no merge commits:
+
+```bash
+# Sync feature branch with main
+git checkout 001-feature-name
+git fetch origin
+git rebase main
+
+# If conflicts, resolve then continue
+git rebase --continue
+
+# Force push after rebase (feature branches only)
+git push --force-with-lease
+```
+
+**Never merge main into feature branches** - always rebase.
+
 ## Code Style
 
 ### TypeScript

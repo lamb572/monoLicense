@@ -2103,6 +2103,36 @@ fix: various bug fixes            # Too vague, multiple changes
 - **CI check**: Rejects PRs with invalid commit messages
 - **Squash merging**: PR title becomes commit message, must follow format
 
+### Branch Workflow
+
+MonoLicense uses a **rebase-based workflow** to maintain linear history:
+
+**Sync Feature Branch**:
+```bash
+# Always rebase onto main, never merge
+git checkout 001-feature-name
+git fetch origin
+git rebase main
+
+# If conflicts occur, resolve then continue
+git rebase --continue
+
+# Force push after rebase (feature branches only, never main)
+git push --force-with-lease
+```
+
+**Rules**:
+1. **Never merge main into feature branches** - always use `git rebase main`
+2. **Linear history required** - no merge commits in feature branches
+3. **Force push allowed** - only on feature branches with `--force-with-lease`
+4. **Never force push main** - protected branch, only fast-forward merges
+
+**Why Rebase?**:
+- Clean, linear commit history
+- Easier to understand project evolution
+- Simpler `git bisect` for debugging
+- Each commit is a logical, complete change
+
 ---
 
 ## Document History
