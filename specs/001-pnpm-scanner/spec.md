@@ -123,7 +123,7 @@ As a developer or CI system, I want to get scan results in JSON format, so I can
 
 - Users have pnpm installed and their monorepo uses `pnpm-workspace.yaml` for workspace configuration.
 - The `pnpm-lock.yaml` file is present and up-to-date (users have run `pnpm install`).
-- Node.js LTS version (18, 20, or 22+) is available in the execution environment.
+- Node.js LTS version (20, 22, or 24) is available in the execution environment.
 - For license extraction from `node_modules`, the modules are installed locally.
 - The lockfile format is pnpm v6.0+ (YAML-based format with `packages` and `importers` sections).
 
