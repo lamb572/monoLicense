@@ -28,17 +28,10 @@ export const detectMonorepo = async (
   const workspaceGlobs = configResult.data.packages;
 
   // Separate include patterns from exclude patterns (those starting with !)
-  const includePatterns: string[] = [];
-  const excludePatterns: string[] = [];
-
-  for (const glob of workspaceGlobs) {
-    if (glob.startsWith('!')) {
-      // Convert negation pattern to glob ignore pattern
-      excludePatterns.push(glob.slice(1));
-    } else {
-      includePatterns.push(glob);
-    }
-  }
+  const includePatterns = workspaceGlobs.filter(glob => !glob.startsWith('!'));
+  const excludePatterns = workspaceGlobs
+    .filter(glob => glob.startsWith('!'))
+    .map(glob => glob.slice(1));
 
   // Find all directories matching the globs that contain package.json
   const projectDirs = await fg(

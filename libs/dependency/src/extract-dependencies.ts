@@ -33,7 +33,7 @@ const toDependency = (
   isDev: boolean
 ): Dependency => ({
   name,
-  version: ref.version.startsWith('link:') ? ref.version : ref.version,
+  version: ref.version,
   license: unknownLicense(),
   isWorkspaceDependency: isWorkspaceSpecifier(ref.specifier),
   isDev,

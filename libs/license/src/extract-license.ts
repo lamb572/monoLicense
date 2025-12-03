@@ -44,10 +44,38 @@ export const extractLicenseFromPackageJson = (
   packageJsonContent: string,
   path?: string
 ): Result<LicenseInfo, ScanError> => {
-  let parsed: PackageJsonLicense;
-
   try {
-    parsed = JSON.parse(packageJsonContent) as PackageJsonLicense;
+    const parsed = JSON.parse(packageJsonContent) as PackageJsonLicense;
+
+    // Primary: Check license field (modern format)
+    if (typeof parsed.license === 'string' && parsed.license.trim()) {
+      const rawLicense = parsed.license.trim();
+      const normalized = normalizeLicense(rawLicense);
+
+      return success({
+        spdxId: normalized,
+        source: 'package.json',
+        rawValue: normalized !== rawLicense ? rawLicense : null,
+      });
+    }
+
+    // Secondary: Check legacy licenses array format
+    if (Array.isArray(parsed.licenses) && parsed.licenses.length > 0) {
+      const firstLicense = parsed.licenses[0];
+      if (firstLicense?.type) {
+        const rawLicense = firstLicense.type;
+        const normalized = normalizeLicense(rawLicense);
+
+        return success({
+          spdxId: normalized,
+          source: 'package.json-array',
+          rawValue: normalized !== rawLicense ? rawLicense : null,
+        });
+      }
+    }
+
+    // No license found
+    return success(unknownLicense());
   } catch {
     return failure({
       type: 'PACKAGE_JSON_PARSE_ERROR',
@@ -55,36 +83,6 @@ export const extractLicenseFromPackageJson = (
       message: 'Invalid JSON in package.json',
     });
   }
-
-  // Primary: Check license field (modern format)
-  if (typeof parsed.license === 'string' && parsed.license.trim()) {
-    const rawLicense = parsed.license.trim();
-    const normalized = normalizeLicense(rawLicense);
-
-    return success({
-      spdxId: normalized,
-      source: 'package.json',
-      rawValue: normalized !== rawLicense ? rawLicense : null,
-    });
-  }
-
-  // Secondary: Check legacy licenses array format
-  if (Array.isArray(parsed.licenses) && parsed.licenses.length > 0) {
-    const firstLicense = parsed.licenses[0];
-    if (firstLicense?.type) {
-      const rawLicense = firstLicense.type;
-      const normalized = normalizeLicense(rawLicense);
-
-      return success({
-        spdxId: normalized,
-        source: 'package.json-array',
-        rawValue: normalized !== rawLicense ? rawLicense : null,
-      });
-    }
-  }
-
-  // No license found
-  return success(unknownLicense());
 };
 
 /**

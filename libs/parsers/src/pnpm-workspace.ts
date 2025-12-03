@@ -44,8 +44,16 @@ export const parsePnpmWorkspaceFromString = (
   path = '<string>'
 ): Result<WorkspaceConfig, ScanError> => {
   try {
-    const raw = parseYaml(content) as RawWorkspaceConfig;
-    return validateWorkspaceConfig(raw ?? { packages: [] }, path);
+    const parsed = parseYaml(content);
+    if (parsed === null || parsed === undefined) {
+      return validateWorkspaceConfig({ packages: [] }, path);
+    }
+    if (typeof parsed !== 'object' || Array.isArray(parsed)) {
+      return failure(
+        workspaceConfigParseError(path, 'Root must be an object')
+      );
+    }
+    return validateWorkspaceConfig(parsed as RawWorkspaceConfig, path);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     return failure(workspaceConfigParseError(path, message));

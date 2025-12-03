@@ -60,19 +60,19 @@ const validateDependencyRefs = (
 ): Record<string, DependencyRef> | undefined => {
   if (!deps || typeof deps !== 'object') return undefined;
 
-  const result: Record<string, DependencyRef> = {};
-  for (const [name, value] of Object.entries(deps)) {
-    if (value && typeof value === 'object' && 'specifier' in value && 'version' in value) {
+  const entries = Object.entries(deps)
+    .filter(([, value]) => {
+      if (!value || typeof value !== 'object') return false;
+      if (!('specifier' in value) || !('version' in value)) return false;
       const ref = value as { specifier: unknown; version: unknown };
-      if (typeof ref.specifier === 'string' && typeof ref.version === 'string') {
-        result[name] = {
-          specifier: ref.specifier,
-          version: ref.version,
-        };
-      }
-    }
-  }
-  return Object.keys(result).length > 0 ? result : undefined;
+      return typeof ref.specifier === 'string' && typeof ref.version === 'string';
+    })
+    .map(([name, value]) => {
+      const ref = value as { specifier: string; version: string };
+      return [name, { specifier: ref.specifier, version: ref.version }] as const;
+    });
+
+  return entries.length > 0 ? Object.fromEntries(entries) : undefined;
 };
 
 /**
@@ -83,9 +83,9 @@ const validateImporters = (
 ): Record<string, ImporterData> => {
   if (!importers || typeof importers !== 'object') return {};
 
-  const result: Record<string, ImporterData> = {};
-  for (const [path, data] of Object.entries(importers)) {
-    if (data && typeof data === 'object') {
+  const entries = Object.entries(importers)
+    .filter(([, data]) => data && typeof data === 'object')
+    .map(([path, data]) => {
       const importer = data as {
         dependencies?: unknown;
         devDependencies?: unknown;
@@ -95,15 +95,16 @@ const validateImporters = (
       const devDeps = validateDependencyRefs(importer.devDependencies);
       const optDeps = validateDependencyRefs(importer.optionalDependencies);
 
-      const importerData: ImporterData = {};
-      if (deps) (importerData as { dependencies?: Record<string, DependencyRef> }).dependencies = deps;
-      if (devDeps) (importerData as { devDependencies?: Record<string, DependencyRef> }).devDependencies = devDeps;
-      if (optDeps) (importerData as { optionalDependencies?: Record<string, DependencyRef> }).optionalDependencies = optDeps;
+      const importerData: ImporterData = {
+        ...(deps && { dependencies: deps }),
+        ...(devDeps && { devDependencies: devDeps }),
+        ...(optDeps && { optionalDependencies: optDeps }),
+      };
 
-      result[path] = importerData;
-    }
-  }
-  return result;
+      return [path, importerData] as const;
+    });
+
+  return Object.fromEntries(entries);
 };
 
 /**
@@ -114,9 +115,9 @@ const validatePackages = (
 ): Record<string, PackageData> => {
   if (!packages || typeof packages !== 'object') return {};
 
-  const result: Record<string, PackageData> = {};
-  for (const [id, data] of Object.entries(packages)) {
-    if (data && typeof data === 'object') {
+  const entries = Object.entries(packages)
+    .filter(([, data]) => data && typeof data === 'object')
+    .map(([id, data]) => {
       const pkg = data as {
         resolution?: unknown;
         dependencies?: unknown;
@@ -136,21 +137,17 @@ const validatePackages = (
             )
           : null;
 
-      const pkgData: PackageData = { resolution: { integrity } };
-      if (dependencies && Object.keys(dependencies).length > 0) {
-        (pkgData as { dependencies?: Record<string, string> }).dependencies = dependencies;
-      }
-      if (typeof pkg.dev === 'boolean') {
-        (pkgData as { dev?: boolean }).dev = pkg.dev;
-      }
-      if (typeof pkg.optional === 'boolean') {
-        (pkgData as { optional?: boolean }).optional = pkg.optional;
-      }
+      const pkgData: PackageData = {
+        resolution: { integrity },
+        ...(dependencies && Object.keys(dependencies).length > 0 && { dependencies }),
+        ...(typeof pkg.dev === 'boolean' && { dev: pkg.dev }),
+        ...(typeof pkg.optional === 'boolean' && { optional: pkg.optional }),
+      };
 
-      result[id] = pkgData;
-    }
-  }
-  return result;
+      return [id, pkgData] as const;
+    });
+
+  return Object.fromEntries(entries);
 };
 
 /**

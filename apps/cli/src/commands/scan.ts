@@ -166,7 +166,7 @@ export const createScanCommand = (): Command => {
       } catch (error) {
         const errorOutput: ErrorOutput = {
           error: {
-            type: 'LOCKFILE_NOT_FOUND',
+            type: 'UNEXPECTED_ERROR',
             message: error instanceof Error ? error.message : 'Unknown error',
           },
         };

@@ -35,7 +35,7 @@
         "path": {
           "type": "string",
           "description": "Relative path from monorepo root",
-          "pattern": "^[^/].*|\\.$"
+          "pattern": "^(?:\\.|[^/].*)$"
         },
         "version": {
           "type": "string",

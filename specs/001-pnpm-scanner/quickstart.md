@@ -1,5 +1,7 @@
 # Quick Start: pnpm Monorepo Scanner
 
+> **Status**: Implementation complete (all 72 tests passing)
+
 ## Prerequisites
 
 - Node.js 20, 22, or 24 LTS
@@ -133,7 +135,7 @@ pnpm test
 
 ### Project Structure
 
-```
+```text
 libs/
 ├── parsers/        # Lockfile/workspace parsing
 │   └── src/

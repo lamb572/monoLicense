@@ -20,7 +20,8 @@
             "WORKSPACE_CONFIG_PARSE_ERROR",
             "INVALID_LOCKFILE_VERSION",
             "PROJECT_NOT_FOUND",
-            "PACKAGE_JSON_PARSE_ERROR"
+            "PACKAGE_JSON_PARSE_ERROR",
+            "UNEXPECTED_ERROR"
           ],
           "description": "Error type identifier"
         },
