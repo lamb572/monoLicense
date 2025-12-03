@@ -3,16 +3,34 @@
     "target": "ES2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    "lib": ["ES2022"],
+    "types": ["node"],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
+    "composite": true,
+    "incremental": true,
+    "noEmit": false,
     "outDir": "dist",
     "rootDir": "src",
-    "noEmit": true
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true
   },
-  "include": ["libs/*/src/**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "references": [
+    { "path": "libs/utils" },
+    { "path": "libs/testing" },
+    { "path": "libs/parsers" },
+    { "path": "libs/dependency" },
+    { "path": "libs/license" },
+    { "path": "apps/cli" }
+  ],
+  "exclude": ["node_modules", "dist", "coverage"]
 }

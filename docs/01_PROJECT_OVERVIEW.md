@@ -805,7 +805,7 @@ To maintain focus and ship quickly, these are explicitly **out of scope** for v1
 ### Core CLI
 
 - **Language**: TypeScript
-- **Runtime**: Node.js (LTS versions: 18, 20, 22+)
+- **Runtime**: Node.js (LTS versions: 20, 22, 24)
 - **Distribution**: npm package (`@monolicense/cli`)
 - **Dependencies** (minimal):
   - Commander.js or Yargs for CLI parsing

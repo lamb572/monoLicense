@@ -7,6 +7,9 @@ reviews:
   auto_review:
     enabled: true
     drafts: false
+    ignore:
+      - "specs/**"
+      - "docs/**"
   path_instructions:
     - path: "**/*.ts"
       instructions: |
@@ -19,6 +22,17 @@ reviews:
         - Return { success: true, data } or { success: false, error }
         - Pure functions with explicit parameters (no hidden state)
         - Immutable data structures (no array.push, object mutation)
+
+        Documentation standards:
+        - All exported functions MUST have JSDoc with @param, @returns, and @example tags
+        - Inline comments should explain WHY, not WHAT - code should be self-documenting
+        - No redundant comments describing obvious code behavior
+
+        Code style:
+        - Named exports only - NEVER use default exports
+        - Use 'import type' for type-only imports
+        - Constants use UPPER_SNAKE_CASE
+        - Boolean variables use is/has/should/can prefix (e.g., isValid, hasViolations)
 
     - path: "libs/**/*.ts"
       instructions: |

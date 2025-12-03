@@ -67,11 +67,25 @@ monolicense/
 - Strict TypeScript, NO `any` without justification
 - All data structures use `readonly` modifiers
 - Discriminated unions for state modeling
+- All functions MUST have explicit return types
+- Use `interface` for objects, `type` only for unions/intersections
+- Always use `import type` for type-only imports
 
 ### V. Test-Driven Development
 - TDD mandatory: Tests first → Fail → Implement → Pass
 - Target 80% coverage (quality over quantity)
 - Testing pyramid: 70% unit, 25% integration, 5% E2E
+
+### VI. Documentation Standards
+- All exported functions MUST have JSDoc with `@param`, `@returns`, `@example`
+- Code should be self-documenting - inline comments explain WHY, not WHAT
+- No redundant comments describing obvious code behavior
+
+### VII. Code Style Conventions
+- Named exports only - NEVER use default exports
+- Constants: `UPPER_SNAKE_CASE`
+- Booleans: `is/has/should/can` prefix (e.g., `isValid`, `hasViolations`)
+- Imports: auto-sorted via ESLint (builtin → external → internal → parent → sibling)
 
 ## Commands
 
@@ -114,12 +128,43 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/):
 - No period at end of subject
 - Breaking changes: add `!` after type (e.g., `feat(cli)!: change output format`)
 
+## Git Workflow
+
+**Rebase-based workflow** - keep linear history, no merge commits:
+
+```bash
+# Sync feature branch with main
+git checkout 001-feature-name
+git fetch origin
+git rebase main
+
+# If conflicts, resolve then continue
+git rebase --continue
+
+# Force push after rebase (feature branches only)
+git push --force-with-lease
+```
+
+**Never merge main into feature branches** - always rebase.
+
 ## Code Style
 
 ### TypeScript
 
 ```typescript
-// ✅ Good: Pure function with explicit parameters
+// ✅ Good: Pure function with JSDoc and explicit parameters
+/**
+ * Extracts license information from a package's package.json file.
+ *
+ * @param packagePath - Absolute path to the package directory
+ * @returns Normalized license info or error
+ *
+ * @example
+ * ```typescript
+ * const result = extractLicense('/path/to/package');
+ * if (result.success) console.log(result.data.spdxId);
+ * ```
+ */
 const extractLicense = (packagePath: string): Result<LicenseInfo, LicenseError> => {
   const packageJson = readPackageJson(packagePath);
   if (!packageJson.success) {
@@ -128,7 +173,7 @@ const extractLicense = (packagePath: string): Result<LicenseInfo, LicenseError> 
   return { success: true, data: normalizeLicense(packageJson.data.license) };
 };
 
-// ❌ Bad: Class with this
+// ❌ Bad: Class with this, no JSDoc
 class LicenseExtractor {
   extract(path: string) {
     return this.normalize(this.read(path));
@@ -172,5 +217,53 @@ Feature specs live in `specs/NNN-feature-name/`.
 - **001-pnpm-scanner** (In Progress): pnpm monorepo scanning with per-project dependency extraction and license detection
 
 <!-- MANUAL ADDITIONS START -->
-<!-- Add project-specific notes here that should persist across updates -->
+## Implementation Commit Workflow
+
+**CRITICAL**: Commits must be made incrementally during implementation, not batched at the end.
+
+### When to Commit
+
+Commit after completing each logical unit of work:
+- After creating a new package (package.json, tsconfig.json)
+- After implementing a function and its tests passing
+- After completing a task from tasks.md
+- After fixing a bug or test failure
+- After adding/updating types
+
+### Commit Frequency Guidelines
+
+- **Small commits**: 1-3 files changed, single logical change
+- **Commit early, commit often**: Every 15-30 minutes of work should produce a commit
+- **Never batch**: Don't accumulate hours of work before committing
+
+### Example Commit Sequence for a Feature
+
+```bash
+# 1. Package setup
+git add libs/license/package.json libs/license/tsconfig.json
+git commit -m "chore(license): initialize package structure"
+
+# 2. Types
+git add libs/license/src/types.ts
+git commit -m "feat(license): add LicenseInfo and LicenseSource types"
+
+# 3. Tests first (TDD)
+git add libs/license/tests/normalize-license.test.ts
+git commit -m "test(license): add normalize-license tests"
+
+# 4. Implementation
+git add libs/license/src/normalize-license.ts
+git commit -m "feat(license): implement SPDX license normalization"
+
+# 5. Integration
+git add libs/license/src/index.ts
+git commit -m "feat(license): export license functions from index"
+```
+
+### Why This Matters
+
+- Enables easy rollback if something breaks
+- Creates clear history for code review
+- Makes rebasing and conflict resolution easier
+- Documents the implementation journey
 <!-- MANUAL ADDITIONS END -->

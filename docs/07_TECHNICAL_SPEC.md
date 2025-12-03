@@ -330,6 +330,91 @@ const detectRushMonorepo = async (rootPath: string): Promise<Result<MonorepoDete
 };
 ```
 
+### 2.6 Lerna Monorepo Detection
+
+**File**: `lerna.json`
+
+Lerna is a monorepo management tool that can work with npm, yarn, or pnpm as the underlying package manager. The lockfile location depends on the `npmClient` configuration.
+
+```typescript
+/**
+ * Detects Lerna monorepo configuration
+ *
+ * @param rootPath - Root directory to scan
+ * @returns Detection result with Lerna projects
+ */
+const detectLernaMonorepo = async (rootPath: string): Promise<Result<MonorepoDetectionResult, InvalidWorkspaceConfigError>> => {
+  const lernaJsonPath = path.join(rootPath, 'lerna.json');
+
+  if (!await fileExists(lernaJsonPath)) {
+    return { success: true, value: { detected: false } };
+  }
+
+  const lernaConfig = await readJsonFile(lernaJsonPath);
+
+  // Lerna 7+ moved packages to lerna.json, older versions may use package.json workspaces
+  const packagePatterns = lernaConfig.packages || ['packages/*'];
+
+  // Determine lockfile based on npmClient (defaults to npm)
+  const npmClient = lernaConfig.npmClient || 'npm';
+  const lockfileLocation = getLockfileForClient(rootPath, npmClient);
+
+  const projects: Project[] = [];
+  for (const pattern of packagePatterns) {
+    const matches = await glob(pattern, { cwd: rootPath, onlyDirectories: true });
+
+    for (const match of matches) {
+      const projectPath = path.join(rootPath, match);
+      const packageJson = await readPackageJson(projectPath);
+
+      if (packageJson) {
+        projects.push({
+          name: packageJson.name || path.basename(match),
+          path: projectPath,
+          packageManager: npmClient
+        });
+      }
+    }
+  }
+
+  return {
+    success: true,
+    value: {
+      detected: true,
+      type: 'lerna-monorepo',
+      projects,
+      lockfileLocation
+    }
+  };
+};
+
+/**
+ * Returns the lockfile path based on the npm client
+ */
+const getLockfileForClient = (rootPath: string, npmClient: string): string => {
+  switch (npmClient) {
+    case 'pnpm':
+      return path.join(rootPath, 'pnpm-lock.yaml');
+    case 'yarn':
+      return path.join(rootPath, 'yarn.lock');
+    case 'npm':
+    default:
+      return path.join(rootPath, 'package-lock.json');
+  }
+};
+```
+
+**Lerna Configuration Notes**:
+
+| Property | Description | Default |
+|----------|-------------|---------|
+| `packages` | Glob patterns for package locations | `['packages/*']` |
+| `npmClient` | Package manager: `npm`, `yarn`, or `pnpm` | `npm` |
+| `version` | Lerna version mode: `independent` or fixed version | - |
+| `useWorkspaces` | Delegate to npm/yarn/pnpm workspaces | `false` |
+
+When `useWorkspaces: true`, Lerna delegates project discovery to the underlying package manager's workspace configuration, and the appropriate workspace detector (pnpm, npm, or yarn) takes precedence.
+
 ---
 
 ## 3. Lockfile Parsing

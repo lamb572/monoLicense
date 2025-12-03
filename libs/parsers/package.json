@@ -1,0 +1,29 @@
+{
+  "name": "@monolicense/parsers",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@monolicense/utils": "workspace:*",
+    "yaml": "^2.3.4"
+  },
+  "devDependencies": {
+    "@monolicense/testing": "workspace:*",
+    "typescript": "^5.3.0",
+    "vitest": "^2.0.0"
+  }
+}

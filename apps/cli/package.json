@@ -1,0 +1,36 @@
+{
+  "name": "@monolicense/cli",
+  "version": "0.0.1",
+  "description": "CLI for scanning pnpm monorepos for license compliance",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "monolicense": "./dist/index.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "dev": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@monolicense/dependency": "workspace:*",
+    "@monolicense/license": "workspace:*",
+    "@monolicense/parsers": "workspace:*",
+    "@monolicense/utils": "workspace:*",
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@monolicense/testing": "workspace:*",
+    "tsx": "^4.19.0",
+    "typescript": "^5.3.3",
+    "vitest": "^2.1.9"
+  }
+}
