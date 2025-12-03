@@ -40,6 +40,7 @@ export default [
       '@typescript-eslint/explicit-function-return-type': 'error',
       '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/prefer-readonly': 'error',
+      '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
 
       // Functional programming rules (per constitution)
       'functional/no-classes': 'error',
@@ -48,8 +49,9 @@ export default [
       'functional/no-let': 'warn',
       'functional/prefer-readonly-type': 'warn',
 
-      // Import rules (circular dependency detection)
+      // Import rules (per constitution)
       'import/no-cycle': 'error',
+      'import/no-default-export': 'error',
 
       // General rules
       'no-console': 'warn',
@@ -75,6 +77,13 @@ export default [
       'functional/immutable-data': 'warn',
       'functional/no-let': 'warn',
       'no-console': 'off',
+    },
+  },
+  {
+    // Config files typically use default exports (framework requirement)
+    files: ['**/vitest.config.ts', '**/eslint.config.js'],
+    rules: {
+      'import/no-default-export': 'off',
     },
   },
 ];
