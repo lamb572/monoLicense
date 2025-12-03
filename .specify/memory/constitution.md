@@ -22,12 +22,25 @@ for expected errors. Functions return `{ success: true, data: T }` or
 ### IV. Type Safety & Immutability
 Strict TypeScript (`tsc --strict`) with comprehensive type coverage. All data structures
 use `readonly` modifiers. Discriminated unions for state modeling. No `any` type without
-explicit justification.
+explicit justification. All functions must have explicit return types. Use `interface` for
+object shapes (faster type checking), `type` only for unions/intersections. Always use
+`import type` for type-only imports.
 
 ### V. Test-Driven Development
 TDD mandatory: Tests written → Tests fail → Implement → Tests pass → Refactor.
 Target 80% coverage (quality over quantity). Testing pyramid: 70% unit, 25% integration,
 5% E2E. Shared testing utilities in `libs/testing`. Every function independently testable.
+
+### VI. Documentation Standards
+All exported functions MUST have JSDoc with `@param`, `@returns`, and `@example` tags.
+Code should be self-documenting - inline comments explain WHY, not WHAT. No redundant
+comments describing obvious code behavior. Internal/private functions may use simpler
+documentation but still require at minimum a description.
+
+### VII. Code Style Conventions
+Named exports only - NEVER use default exports. Constants use UPPER_SNAKE_CASE. Boolean
+variables use is/has/should/can prefix (e.g., `isValid`, `hasViolations`). Imports are
+auto-sorted via ESLint with groups: builtin → external → internal → parent → sibling.
 
 ## Technology Stack
 

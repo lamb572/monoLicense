@@ -67,11 +67,25 @@ monolicense/
 - Strict TypeScript, NO `any` without justification
 - All data structures use `readonly` modifiers
 - Discriminated unions for state modeling
+- All functions MUST have explicit return types
+- Use `interface` for objects, `type` only for unions/intersections
+- Always use `import type` for type-only imports
 
 ### V. Test-Driven Development
 - TDD mandatory: Tests first → Fail → Implement → Pass
 - Target 80% coverage (quality over quantity)
 - Testing pyramid: 70% unit, 25% integration, 5% E2E
+
+### VI. Documentation Standards
+- All exported functions MUST have JSDoc with `@param`, `@returns`, `@example`
+- Code should be self-documenting - inline comments explain WHY, not WHAT
+- No redundant comments describing obvious code behavior
+
+### VII. Code Style Conventions
+- Named exports only - NEVER use default exports
+- Constants: `UPPER_SNAKE_CASE`
+- Booleans: `is/has/should/can` prefix (e.g., `isValid`, `hasViolations`)
+- Imports: auto-sorted via ESLint (builtin → external → internal → parent → sibling)
 
 ## Commands
 
@@ -138,7 +152,19 @@ git push --force-with-lease
 ### TypeScript
 
 ```typescript
-// ✅ Good: Pure function with explicit parameters
+// ✅ Good: Pure function with JSDoc and explicit parameters
+/**
+ * Extracts license information from a package's package.json file.
+ *
+ * @param packagePath - Absolute path to the package directory
+ * @returns Normalized license info or error
+ *
+ * @example
+ * ```typescript
+ * const result = extractLicense('/path/to/package');
+ * if (result.success) console.log(result.data.spdxId);
+ * ```
+ */
 const extractLicense = (packagePath: string): Result<LicenseInfo, LicenseError> => {
   const packageJson = readPackageJson(packagePath);
   if (!packageJson.success) {
@@ -147,7 +173,7 @@ const extractLicense = (packagePath: string): Result<LicenseInfo, LicenseError> 
   return { success: true, data: normalizeLicense(packageJson.data.license) };
 };
 
-// ❌ Bad: Class with this
+// ❌ Bad: Class with this, no JSDoc
 class LicenseExtractor {
   extract(path: string) {
     return this.normalize(this.read(path));
