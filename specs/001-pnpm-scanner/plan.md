@@ -1,48 +1,44 @@
-# Implementation Plan: pnpm Monorepo Scanner
+# Implementation Plan: [FEATURE]
 
-**Branch**: `001-pnpm-scanner` | **Date**: 2025-12-02 | **Spec**: [spec.md](./spec.md)
-**Input**: Feature specification from `/specs/001-pnpm-scanner/spec.md`
+**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
+**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
 
 **Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
 
 ## Summary
 
-Build a pnpm monorepo scanner that detects workspace projects, extracts per-project dependencies from `pnpm-lock.yaml`, and identifies license information for each dependency. Output is JSON to stdout. This is the foundational Phase 1 feature enabling all downstream compliance functionality.
+[Extract from feature spec: primary requirement + technical approach from research]
 
 ## Technical Context
 
-**Language/Version**: TypeScript 5.3+ (strict mode, composite projects)
-**Primary Dependencies**: yaml (YAML parsing), spdx-correct (license normalization), fast-glob (workspace pattern expansion)
-**Storage**: N/A (reads filesystem only, no persistence)
-**Testing**: Vitest (unit/integration), target 80% coverage
-**Target Platform**: Node.js 20, 22, 24 LTS (cross-platform CLI)
-**Project Type**: monorepo (apps/libs architecture)
-**Performance Goals**: <15s for 500 deps, <60s for 2000 deps
-**Constraints**: Offline-capable (no network calls during scan), 95% license detection rate
-**Scale/Scope**: Monorepos with up to 2000 dependencies across multiple workspace projects
+<!--
+  ACTION REQUIRED: Replace the content in this section with the technical details
+  for the project. The structure here is presented in advisory capacity to guide
+  the iteration process.
+-->
+
+**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
+**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
+**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
+**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
+**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
+**Project Type**: [single/web/mobile - determines source structure]  
+**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
+**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
+**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-| Principle | Requirement | Status | Notes |
-|-----------|-------------|--------|-------|
-| I. Functional Programming | Pure functions, no classes, no `this` | ✅ PASS | All scanner functions will be pure |
-| II. Apps/Libs Architecture | Strict apps/libs separation | ✅ PASS | CLI in `apps/cli`, core logic in `libs/parsers`, `libs/dependency`, `libs/license` |
-| III. Result Type Pattern | `Result<T, E>` for error handling | ✅ PASS | All parsing/extraction functions return Result types |
-| IV. Type Safety & Immutability | Strict TS, readonly, no `any` | ✅ PASS | All entities defined with readonly interfaces |
-| V. Test-Driven Development | TDD, 80% coverage | ✅ PASS | Tests first for all parsers and extractors |
-| Technology Stack | pnpm, TS 5.3+, Vitest, ESLint 9.x | ✅ PASS | All aligned with constitution |
-| Development Workflow | Feature branch, spec-first, rebase | ✅ PASS | Following `001-pnpm-scanner` branch pattern |
-
-**Gate Status**: ✅ ALL GATES PASS - No violations requiring justification
+[Gates determined based on constitution file]
 
 ## Project Structure
 
 ### Documentation (this feature)
 
 ```text
-specs/001-pnpm-scanner/
+specs/[###-feature]/
 ├── plan.md              # This file (/speckit.plan command output)
 ├── research.md          # Phase 0 output (/speckit.plan command)
 ├── data-model.md        # Phase 1 output (/speckit.plan command)
@@ -52,58 +48,57 @@ specs/001-pnpm-scanner/
 ```
 
 ### Source Code (repository root)
+<!--
+  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
+  for this feature. Delete unused options and expand the chosen structure with
+  real paths (e.g., apps/admin, packages/something). The delivered plan must
+  not include Option labels.
+-->
 
 ```text
-apps/
-└── cli/
-    ├── src/
-    │   ├── commands/
-    │   │   └── scan.ts           # CLI scan command entry point
-    │   └── index.ts              # CLI main entry
-    └── tests/
-        └── commands/
-            └── scan.test.ts
+# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
+src/
+├── models/
+├── services/
+├── cli/
+└── lib/
 
-libs/
-├── parsers/
-│   ├── src/
-│   │   ├── pnpm-lockfile.ts      # pnpm-lock.yaml parser
-│   │   ├── pnpm-workspace.ts     # pnpm-workspace.yaml parser
-│   │   ├── types.ts              # Parser type definitions
-│   │   └── index.ts
-│   └── tests/
-│       ├── pnpm-lockfile.test.ts
-│       └── pnpm-workspace.test.ts
-│
-├── dependency/
-│   ├── src/
-│   │   ├── detect-monorepo.ts    # Workspace detection
-│   │   ├── extract-dependencies.ts # Per-project dependency extraction
-│   │   ├── types.ts
-│   │   └── index.ts
-│   └── tests/
-│       ├── detect-monorepo.test.ts
-│       └── extract-dependencies.test.ts
-│
-├── license/
-│   ├── src/
-│   │   ├── extract-license.ts    # License extraction from package.json/LICENSE
-│   │   ├── normalize-license.ts  # SPDX normalization
-│   │   ├── types.ts
-│   │   └── index.ts
-│   └── tests/
-│       ├── extract-license.test.ts
-│       └── normalize-license.test.ts
-│
-└── testing/
-    └── src/
-        └── fixtures/             # Shared test fixtures (mock lockfiles, etc.)
+tests/
+├── contract/
+├── integration/
+└── unit/
+
+# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
+backend/
+├── src/
+│   ├── models/
+│   ├── services/
+│   └── api/
+└── tests/
+
+frontend/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   └── services/
+└── tests/
+
+# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
+api/
+└── [same as backend above]
+
+ios/ or android/
+└── [platform-specific structure: feature modules, UI flows, platform tests]
 ```
 
-**Structure Decision**: Apps/libs monorepo architecture per constitution. CLI app delegates to three feature libraries: `parsers` (lockfile/workspace parsing), `dependency` (project detection, dependency extraction), and `license` (license detection/normalization). Shared test fixtures in `libs/testing`.
+**Structure Decision**: [Document the selected structure and reference the real
+directories captured above]
 
 ## Complexity Tracking
 
 > **Fill ONLY if Constitution Check has violations that must be justified**
 
-No violations - all gates pass. Design follows constitution principles.
+| Violation | Why Needed | Simpler Alternative Rejected Because |
+|-----------|------------|-------------------------------------|
+| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
+| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |

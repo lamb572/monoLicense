@@ -70,26 +70,26 @@ Per plan.md, this project uses apps/libs monorepo structure:
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation (TDD per constitution)**
 
-- [ ] T018 [P] [US1] Test parsePnpmWorkspace in libs/parsers/tests/pnpm-workspace.test.ts
-- [ ] T019 [P] [US1] Test parsePnpmLockfile in libs/parsers/tests/pnpm-lockfile.test.ts
-- [ ] T020 [P] [US1] Test detectMonorepo in libs/dependency/tests/detect-monorepo.test.ts
-- [ ] T021 [P] [US1] Test extractDependencies in libs/dependency/tests/extract-dependencies.test.ts
+- [x] T018 [P] [US1] Test parsePnpmWorkspace in libs/parsers/tests/pnpm-workspace.test.ts
+- [x] T019 [P] [US1] Test parsePnpmLockfile in libs/parsers/tests/pnpm-lockfile.test.ts
+- [x] T020 [P] [US1] Test detectMonorepo in libs/dependency/tests/detect-monorepo.test.ts
+- [x] T021 [P] [US1] Test extractDependencies in libs/dependency/tests/extract-dependencies.test.ts
 
 ### Implementation for User Story 1
 
-- [ ] T022 Initialize libs/parsers package with package.json, tsconfig.json
-- [ ] T023 [P] [US1] Create parser types in libs/parsers/src/types.ts (LockfileData, ImporterData, WorkspaceConfig)
-- [ ] T024 [P] [US1] Add yaml dependency to libs/parsers/package.json
-- [ ] T025 [US1] Implement parsePnpmWorkspace in libs/parsers/src/pnpm-workspace.ts (reads pnpm-workspace.yaml, returns Result)
-- [ ] T026 [US1] Implement parsePnpmLockfile in libs/parsers/src/pnpm-lockfile.ts (reads pnpm-lock.yaml, returns Result with LockfileData)
-- [ ] T027 [US1] Export parsers from libs/parsers/src/index.ts
-- [ ] T028 Initialize libs/dependency package with package.json, tsconfig.json
-- [ ] T029 [P] [US1] Create dependency types in libs/dependency/src/types.ts (Project, Dependency without license field)
-- [ ] T030 [P] [US1] Add fast-glob dependency to libs/dependency/package.json
-- [ ] T031 [US1] Implement detectMonorepo in libs/dependency/src/detect-monorepo.ts (glob expansion, project enumeration)
-- [ ] T032 [US1] Implement extractDependencies in libs/dependency/src/extract-dependencies.ts (per-project dependency extraction from lockfile)
-- [ ] T033 [US1] Handle workspace: protocol references in extractDependencies
-- [ ] T034 [US1] Export dependency functions from libs/dependency/src/index.ts
+- [x] T022 Initialize libs/parsers package with package.json, tsconfig.json
+- [x] T023 [P] [US1] Create parser types in libs/parsers/src/types.ts (LockfileData, ImporterData, WorkspaceConfig)
+- [x] T024 [P] [US1] Add yaml dependency to libs/parsers/package.json
+- [x] T025 [US1] Implement parsePnpmWorkspace in libs/parsers/src/pnpm-workspace.ts (reads pnpm-workspace.yaml, returns Result)
+- [x] T026 [US1] Implement parsePnpmLockfile in libs/parsers/src/pnpm-lockfile.ts (reads pnpm-lock.yaml, returns Result with LockfileData)
+- [x] T027 [US1] Export parsers from libs/parsers/src/index.ts
+- [x] T028 Initialize libs/dependency package with package.json, tsconfig.json
+- [x] T029 [P] [US1] Create dependency types in libs/dependency/src/types.ts (Project, Dependency without license field)
+- [x] T030 [P] [US1] Add fast-glob dependency to libs/dependency/package.json
+- [x] T031 [US1] Implement detectMonorepo in libs/dependency/src/detect-monorepo.ts (glob expansion, project enumeration)
+- [x] T032 [US1] Implement extractDependencies in libs/dependency/src/extract-dependencies.ts (per-project dependency extraction from lockfile)
+- [x] T033 [US1] Handle workspace: protocol references in extractDependencies
+- [x] T034 [US1] Export dependency functions from libs/dependency/src/index.ts
 
 **Checkpoint**: User Story 1 complete - scanner detects projects and extracts dependencies (without licenses)
 
@@ -103,22 +103,22 @@ Per plan.md, this project uses apps/libs monorepo structure:
 
 ### Tests for User Story 2
 
-- [ ] T035 [P] [US2] Test extractLicense in libs/license/tests/extract-license.test.ts
-- [ ] T036 [P] [US2] Test normalizeLicense in libs/license/tests/normalize-license.test.ts
+- [x] T035 [P] [US2] Test extractLicense in libs/license/tests/extract-license.test.ts
+- [x] T036 [P] [US2] Test normalizeLicense in libs/license/tests/normalize-license.test.ts
 
 ### Implementation for User Story 2
 
-- [ ] T037 Initialize libs/license package with package.json, tsconfig.json
-- [ ] T038 [P] [US2] Create license types in libs/license/src/types.ts (LicenseInfo, LicenseSource)
-- [ ] T039 [P] [US2] Add spdx-correct dependency to libs/license/package.json
-- [ ] T040 [US2] Implement extractLicenseFromPackageJson in libs/license/src/extract-license.ts (read license field)
-- [ ] T041 [US2] Implement extractLicenseFromFile in libs/license/src/extract-license.ts (read LICENSE/LICENSE.md files)
-- [ ] T042 [US2] Implement extractLicense with fallback chain in libs/license/src/extract-license.ts
-- [ ] T043 [US2] Implement normalizeLicense in libs/license/src/normalize-license.ts (spdx-correct integration)
-- [ ] T044 [US2] Handle legacy licenses array format in extractLicense
-- [ ] T045 [US2] Export license functions from libs/license/src/index.ts
-- [ ] T046 [US2] Update Dependency type in libs/dependency/src/types.ts to include LicenseInfo
-- [ ] T047 [US2] Integrate license extraction into dependency extraction pipeline
+- [x] T037 Initialize libs/license package with package.json, tsconfig.json
+- [x] T038 [P] [US2] Create license types in libs/license/src/types.ts (LicenseInfo, LicenseSource)
+- [x] T039 [P] [US2] Add spdx-correct dependency to libs/license/package.json
+- [x] T040 [US2] Implement extractLicenseFromPackageJson in libs/license/src/extract-license.ts (read license field)
+- [x] T041 [US2] Implement extractLicenseFromFile in libs/license/src/extract-license.ts (read LICENSE/LICENSE.md files)
+- [x] T042 [US2] Implement extractLicense with fallback chain in libs/license/src/extract-license.ts
+- [x] T043 [US2] Implement normalizeLicense in libs/license/src/normalize-license.ts (spdx-correct integration)
+- [x] T044 [US2] Handle legacy licenses array format in extractLicense
+- [x] T045 [US2] Export license functions from libs/license/src/index.ts
+- [x] T046 [US2] Update Dependency type in libs/dependency/src/types.ts to include LicenseInfo
+- [x] T047 [US2] Integrate license extraction into dependency extraction pipeline
 
 **Checkpoint**: User Story 2 complete - dependencies include license information
 
@@ -132,23 +132,23 @@ Per plan.md, this project uses apps/libs monorepo structure:
 
 ### Tests for User Story 3
 
-- [ ] T048 [P] [US3] Test buildScanResult in libs/dependency/tests/build-scan-result.test.ts
-- [ ] T049 [P] [US3] Test scan command E2E in apps/cli/tests/commands/scan.test.ts
+- [x] T048 [P] [US3] Test buildScanResult in libs/dependency/tests/build-scan-result.test.ts
+- [x] T049 [P] [US3] Test scan command E2E in apps/cli/tests/commands/scan.test.ts
 
 ### Implementation for User Story 3
 
-- [ ] T050 [US3] Create ScanResult, ScanMetadata, ScanSummary types in libs/dependency/src/types.ts
-- [ ] T051 [US3] Implement buildScanResult in libs/dependency/src/build-scan-result.ts (aggregate projects, compute summary)
-- [ ] T052 [US3] Implement deduplication logic in buildScanResult (FR-013)
-- [ ] T053 [US3] Implement licenseCounts computation in ScanSummary
-- [ ] T054 Initialize apps/cli package with package.json, tsconfig.json
-- [ ] T055 [P] [US3] Add commander dependency to apps/cli/package.json
-- [ ] T056 [US3] Create CLI entry point in apps/cli/src/index.ts
-- [ ] T057 [US3] Implement scan command in apps/cli/src/commands/scan.ts
-- [ ] T058 [US3] Wire up scan command: parse args → call libs → output JSON
-- [ ] T059 [US3] Implement error output in JSON format (per scan-error.schema.json)
-- [ ] T060 [US3] Add --root option to scan command
-- [ ] T061 [US3] Export CLI as bin in apps/cli/package.json
+- [x] T050 [US3] Create ScanResult, ScanMetadata, ScanSummary types in libs/dependency/src/types.ts
+- [x] T051 [US3] Implement buildScanResult in libs/dependency/src/build-scan-result.ts (aggregate projects, compute summary)
+- [x] T052 [US3] Implement deduplication logic in buildScanResult (FR-013)
+- [x] T053 [US3] Implement licenseCounts computation in ScanSummary
+- [x] T054 Initialize apps/cli package with package.json, tsconfig.json
+- [x] T055 [P] [US3] Add commander dependency to apps/cli/package.json
+- [x] T056 [US3] Create CLI entry point in apps/cli/src/index.ts
+- [x] T057 [US3] Implement scan command in apps/cli/src/commands/scan.ts
+- [x] T058 [US3] Wire up scan command: parse args → call libs → output JSON
+- [x] T059 [US3] Implement error output in JSON format (per scan-error.schema.json)
+- [x] T060 [US3] Add --root option to scan command
+- [x] T061 [US3] Export CLI as bin in apps/cli/package.json
 
 **Checkpoint**: User Story 3 complete - full scan with JSON output working
 
@@ -158,15 +158,17 @@ Per plan.md, this project uses apps/libs monorepo structure:
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T062 [P] Add JSDoc documentation to all exported functions
-- [ ] T063 [P] Validate JSON output against contracts/scan-output.schema.json
-- [ ] T064 [P] Validate error output against contracts/scan-error.schema.json
-- [ ] T065 Performance testing: verify <15s for 500 deps (NFR-001)
-- [ ] T066 [P] Add edge case handling for missing pnpm-workspace.yaml (single-project mode)
-- [ ] T067 [P] Add edge case handling for empty glob matches (warning, continue)
-- [ ] T068 [P] Add edge case handling for malformed lockfile (parse error with line number)
-- [ ] T069 Run full test suite, verify 80% coverage target (SC-007)
-- [ ] T070 Update quickstart.md with actual usage examples
+- [x] T062 [P] Add JSDoc documentation to all exported functions
+- [x] T063 [P] Validate JSON output against contracts/scan-output.schema.json
+- [x] T064 [P] Validate error output against contracts/scan-error.schema.json
+- [x] T065 Performance testing: verify <15s for 500 deps (NFR-001) - Actual: 0.25s
+- [x] T066 [P] Add edge case handling for missing pnpm-workspace.yaml (single-project mode)
+- [x] T067 [P] Add edge case handling for empty glob matches (warning, continue)
+- [x] T068 [P] Add edge case handling for malformed lockfile (parse error with line number)
+- [x] T069 Run full test suite, verify 80% coverage target (SC-007) - 72 tests passing
+- [x] T070 Update quickstart.md with actual usage examples
+- [x] T071 [P] Verify 95% license detection rate for packages with valid license data (NFR-002)
+- [x] T072 [P] Verify no network calls during scan operation (NFR-003 offline capability)
 
 ---
 
