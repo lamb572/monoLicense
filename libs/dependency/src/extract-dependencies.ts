@@ -1,10 +1,5 @@
-import {
-  Result,
-  success,
-  failure,
-  ScanError,
-  projectNotFound,
-} from '@monolicense/utils';
+import { success, failure, projectNotFound } from '@monolicense/utils';
+import type { Result, ScanError } from '@monolicense/utils';
 import { unknownLicense } from '@monolicense/license';
 import type { LockfileData, DependencyRef } from '@monolicense/parsers';
 import type { Dependency } from './types.js';
@@ -56,9 +51,20 @@ const extractFromRefs = (
 /**
  * Extracts dependencies for a specific project from the lockfile.
  *
- * @param lockfile - Parsed lockfile data
+ * Looks up the project in the lockfile's importers and extracts both
+ * production and development dependencies with their metadata.
+ *
+ * @param lockfile - Parsed lockfile data from parsePnpmLockfile
  * @param projectPath - Path to the project (e.g., "." for root, "apps/web" for nested)
- * @returns Result containing dependencies and devDependencies arrays
+ * @returns Result containing dependencies and devDependencies arrays, or PROJECT_NOT_FOUND error
+ *
+ * @example
+ * ```typescript
+ * const result = extractDependencies(lockfileData, 'apps/web');
+ * if (result.success) {
+ *   console.log(`Found ${result.data.dependencies.length} production deps`);
+ * }
+ * ```
  */
 export const extractDependencies = (
   lockfile: LockfileData,

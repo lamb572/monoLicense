@@ -1,5 +1,5 @@
-import { Result, success, failure } from '@monolicense/utils';
-import type { ScanError } from '@monolicense/utils';
+import { success, failure } from '@monolicense/utils';
+import type { Result, ScanError } from '@monolicense/utils';
 import type { LicenseInfo } from './types.js';
 import { unknownLicense } from './types.js';
 import { normalizeLicense } from './normalize-license.js';
@@ -39,6 +39,21 @@ interface PackageJsonLicense {
 
 /**
  * Extracts license information from package.json content string.
+ *
+ * Parses the JSON and extracts license from either the modern `license` field
+ * or the legacy `licenses` array format. Normalizes to SPDX identifiers.
+ *
+ * @param packageJsonContent - Raw JSON string content of package.json
+ * @param path - Optional path for error messages
+ * @returns Extracted license info or error (PACKAGE_JSON_PARSE_ERROR)
+ *
+ * @example
+ * ```typescript
+ * const result = extractLicenseFromPackageJson('{"license": "MIT"}');
+ * if (result.success) {
+ *   console.log(result.data.spdxId); // 'MIT'
+ * }
+ * ```
  */
 export const extractLicenseFromPackageJson = (
   packageJsonContent: string,
@@ -74,7 +89,6 @@ export const extractLicenseFromPackageJson = (
       }
     }
 
-    // No license found
     return success(unknownLicense());
   } catch {
     return failure({
@@ -87,11 +101,24 @@ export const extractLicenseFromPackageJson = (
 
 /**
  * Extracts license information from LICENSE file content using pattern matching.
+ *
+ * Scans the file content against known license patterns (MIT, Apache-2.0, ISC, etc.)
+ * and returns the first matching SPDX identifier.
+ *
+ * @param fileContent - Raw text content of the LICENSE file
+ * @returns Extracted license info (never fails, returns UNKNOWN if no match)
+ *
+ * @example
+ * ```typescript
+ * const result = extractLicenseFromFile('MIT License\n\nCopyright...');
+ * if (result.success) {
+ *   console.log(result.data.spdxId); // 'MIT'
+ * }
+ * ```
  */
 export const extractLicenseFromFile = (fileContent: string): Result<LicenseInfo, ScanError> => {
   const content = fileContent.trim();
 
-  // Check each pattern
   for (const { pattern, spdxId } of LICENSE_PATTERNS) {
     if (pattern.test(content)) {
       return success({

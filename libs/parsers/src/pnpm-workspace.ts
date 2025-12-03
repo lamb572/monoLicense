@@ -1,13 +1,12 @@
 import { readFile } from 'node:fs/promises';
 import { parse as parseYaml } from 'yaml';
 import {
-  Result,
   success,
   failure,
-  ScanError,
   workspaceConfigNotFound,
   workspaceConfigParseError,
 } from '@monolicense/utils';
+import type { Result, ScanError } from '@monolicense/utils';
 import type { WorkspaceConfig, RawWorkspaceConfig } from './types.js';
 
 /**
@@ -38,6 +37,21 @@ const validateWorkspaceConfig = (
 
 /**
  * Parses pnpm-workspace.yaml content from a string.
+ *
+ * Validates the workspace configuration and extracts the packages array
+ * containing workspace glob patterns.
+ *
+ * @param content - Raw YAML string content of the workspace config
+ * @param path - Optional path for error messages (defaults to '<string>')
+ * @returns Parsed workspace config or error
+ *
+ * @example
+ * ```typescript
+ * const result = parsePnpmWorkspaceFromString('packages:\n  - "apps/*"');
+ * if (result.success) {
+ *   console.log(result.data.packages); // ['apps/*']
+ * }
+ * ```
  */
 export const parsePnpmWorkspaceFromString = (
   content: string,
@@ -62,6 +76,20 @@ export const parsePnpmWorkspaceFromString = (
 
 /**
  * Reads and parses pnpm-workspace.yaml from the filesystem.
+ *
+ * Reads the file at the given path and parses it as a pnpm workspace config.
+ * Returns appropriate errors for missing files or parse failures.
+ *
+ * @param path - Absolute or relative path to pnpm-workspace.yaml
+ * @returns Parsed workspace config or error (WORKSPACE_CONFIG_NOT_FOUND, WORKSPACE_CONFIG_PARSE_ERROR)
+ *
+ * @example
+ * ```typescript
+ * const result = await parsePnpmWorkspace('./pnpm-workspace.yaml');
+ * if (result.success) {
+ *   console.log(`Found ${result.data.packages.length} workspace patterns`);
+ * }
+ * ```
  */
 export const parsePnpmWorkspace = async (
   path: string

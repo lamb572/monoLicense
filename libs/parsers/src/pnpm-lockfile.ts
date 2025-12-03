@@ -1,14 +1,13 @@
 import { readFile } from 'node:fs/promises';
 import { parse as parseYaml } from 'yaml';
 import {
-  Result,
   success,
   failure,
-  ScanError,
   lockfileNotFound,
   lockfileParseError,
   invalidLockfileVersion,
 } from '@monolicense/utils';
+import type { Result, ScanError } from '@monolicense/utils';
 import type {
   LockfileData,
   RawLockfileData,
@@ -168,6 +167,7 @@ const validateLockfileData = (
     packages: validatePackages(raw.packages),
   };
 
+  // Conditionally add settings - mutation is contained within function scope
   if (raw.settings) {
     (lockfileData as { settings?: LockfileData['settings'] }).settings =
       raw.settings as LockfileData['settings'];
@@ -178,6 +178,21 @@ const validateLockfileData = (
 
 /**
  * Parses pnpm-lock.yaml content from a string.
+ *
+ * Validates the lockfile version (must be >=6.0) and transforms raw YAML
+ * into a typed LockfileData structure with importers and packages.
+ *
+ * @param content - Raw YAML string content of the lockfile
+ * @param path - Optional path for error messages (defaults to '<string>')
+ * @returns Parsed lockfile data or error
+ *
+ * @example
+ * ```typescript
+ * const result = parsePnpmLockfileFromString(yamlContent);
+ * if (result.success) {
+ *   console.log(result.data.lockfileVersion);
+ * }
+ * ```
  */
 export const parsePnpmLockfileFromString = (
   content: string,
@@ -197,6 +212,20 @@ export const parsePnpmLockfileFromString = (
 
 /**
  * Reads and parses pnpm-lock.yaml from the filesystem.
+ *
+ * Reads the file at the given path and parses it as a pnpm lockfile.
+ * Returns appropriate errors for missing files or parse failures.
+ *
+ * @param path - Absolute or relative path to pnpm-lock.yaml
+ * @returns Parsed lockfile data or error (LOCKFILE_NOT_FOUND, LOCKFILE_PARSE_ERROR)
+ *
+ * @example
+ * ```typescript
+ * const result = await parsePnpmLockfile('./pnpm-lock.yaml');
+ * if (result.success) {
+ *   console.log(`Found ${Object.keys(result.data.packages).length} packages`);
+ * }
+ * ```
  */
 export const parsePnpmLockfile = async (
   path: string

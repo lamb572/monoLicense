@@ -67,13 +67,11 @@ const buildProject = async (
   monorepoRoot: string,
   isRoot: boolean
 ): Promise<Project | null> => {
-  // Extract dependencies from lockfile
   const depsResult = extractDependencies(lockfile, projectPath);
   if (!isSuccess(depsResult)) {
     return null;
   }
 
-  // Read package.json for name and version
   const packageJsonPath = path.join(
     monorepoRoot,
     projectPath === '.' ? '' : projectPath,
@@ -105,7 +103,6 @@ const buildProject = async (
  * Performs the scan operation.
  */
 const performScan = async (rootPath: string): Promise<ScanResult | ScanError> => {
-  // Detect monorepo
   const monorepoResult = await detectMonorepo(rootPath);
   if (!isSuccess(monorepoResult)) {
     return monorepoResult.error;
@@ -113,7 +110,6 @@ const performScan = async (rootPath: string): Promise<ScanResult | ScanError> =>
 
   const { root: monorepoRoot, projectPaths } = monorepoResult.data;
 
-  // Parse lockfile
   const lockfilePath = path.join(monorepoRoot, 'pnpm-lock.yaml');
   const lockfileResult = await parsePnpmLockfile(lockfilePath);
   if (!isSuccess(lockfileResult)) {
@@ -122,16 +118,13 @@ const performScan = async (rootPath: string): Promise<ScanResult | ScanError> =>
 
   const lockfile = lockfileResult.data;
 
-  // Build projects list
   const projects: Project[] = [];
 
-  // Add root project
   const rootProject = await buildProject(lockfile, '.', monorepoRoot, true);
   if (rootProject) {
     projects.push(rootProject);
   }
 
-  // Add workspace projects
   for (const projectPath of projectPaths) {
     const project = await buildProject(lockfile, projectPath, monorepoRoot, false);
     if (project) {
@@ -139,7 +132,6 @@ const performScan = async (rootPath: string): Promise<ScanResult | ScanError> =>
     }
   }
 
-  // Build and return scan result
   return buildScanResult(projects, monorepoRoot, lockfile.lockfileVersion);
 };
 
@@ -155,13 +147,12 @@ export const createScanCommand = (): Command => {
         const rootPath = path.resolve(options.root);
         const result = await performScan(rootPath);
 
-        // Check if result is an error (has 'type' property)
+        // Discriminated union check: ScanError has 'type', ScanResult doesn't
         if ('type' in result) {
           console.log(JSON.stringify(formatErrorOutput(result), null, 2));
           process.exit(1);
         }
 
-        // Output scan result
         console.log(JSON.stringify(result, null, 2));
       } catch (error) {
         const errorOutput: ErrorOutput = {

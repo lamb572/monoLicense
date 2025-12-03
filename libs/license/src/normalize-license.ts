@@ -7,20 +7,17 @@ import spdxCorrect from 'spdx-correct';
 export const normalizeLicense = (license: string): string => {
   const trimmed = license.trim();
 
-  // Handle empty string
   if (!trimmed) {
     return 'UNKNOWN';
   }
 
-  // Handle UNLICENSED - this is a special case
+  // UNLICENSED is a reserved keyword per npm spec, not an SPDX identifier
   if (trimmed.toUpperCase() === 'UNLICENSED') {
     return 'UNLICENSED';
   }
 
-  // Try to correct the license using spdx-correct
   const corrected = spdxCorrect(trimmed);
 
-  // If spdx-correct returns null, the license is unrecognizable
   if (corrected === null) {
     return 'UNKNOWN';
   }
