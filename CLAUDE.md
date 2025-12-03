@@ -7,6 +7,10 @@ Auto-generated from project documentation. Last updated: 2025-12-02
 MonoLicense is a monorepo-friendly license and dependency compliance tool for JS/TS teams. It scans pnpm/npm/yarn workspaces, extracts per-project dependencies, and enforces license policies.
 
 ## Active Technologies
+- TypeScript 5.3+ (strict mode, composite projects) + yaml (YAML parsing), spdx-correct (license normalization), fast-glob (workspace pattern expansion) (001-pnpm-scanner)
+- N/A (reads filesystem only, no persistence) (001-pnpm-scanner)
+- TypeScript 5.3+ (existing project) + GitHub Actions, CodeRabbit, ESLint 9.x, eslint-plugin-functional (002-github-setup)
+- N/A (configuration files only) (002-github-setup)
 
 - **Language**: TypeScript 5.3+ (strict mode)
 - **Package Manager**: pnpm 8.x with workspaces
@@ -162,6 +166,8 @@ This project uses spec-kit for feature planning:
 Feature specs live in `specs/NNN-feature-name/`.
 
 ## Recent Changes
+- 002-github-setup: Added TypeScript 5.3+ (existing project) + GitHub Actions, CodeRabbit, ESLint 9.x, eslint-plugin-functional
+- 001-pnpm-scanner: Added TypeScript 5.3+ (strict mode, composite projects) + yaml (YAML parsing), spdx-correct (license normalization), fast-glob (workspace pattern expansion)
 
 - **001-pnpm-scanner** (In Progress): pnpm monorepo scanning with per-project dependency extraction and license detection
 

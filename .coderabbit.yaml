@@ -1,0 +1,39 @@
+# CodeRabbit Configuration
+# Aligns with project constitution for functional programming enforcement
+
+language: en-US
+
+reviews:
+  auto_review:
+    enabled: true
+    drafts: false
+  path_instructions:
+    - path: "**/*.ts"
+      instructions: |
+        Review for functional programming compliance per project constitution:
+        - No classes (use pure functions and factory functions)
+        - No 'this' keyword
+        - No 'let' declarations (use const)
+        - All types should use 'readonly' modifiers
+        - Result<T, E> pattern for error handling (no thrown exceptions for expected errors)
+        - Return { success: true, data } or { success: false, error }
+        - Pure functions with explicit parameters (no hidden state)
+        - Immutable data structures (no array.push, object mutation)
+
+    - path: "libs/**/*.ts"
+      instructions: |
+        Additional library requirements:
+        - Each lib should export via index.ts barrel file
+        - Types should be exported from types.ts
+        - No circular dependencies between libs
+        - Tests should be co-located in tests/ directory
+
+    - path: "apps/**/*.ts"
+      instructions: |
+        Application-specific guidance:
+        - CLI apps may use console.log for output
+        - Entry points should be minimal, delegating to libs
+        - Use commander.js patterns for CLI commands
+
+chat:
+  auto_reply: true

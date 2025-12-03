@@ -1,0 +1,13 @@
+{
+  "name": "@monolicense/placeholder",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "echo 'No build required for placeholder'",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^2.0.0"
+  }
+}
